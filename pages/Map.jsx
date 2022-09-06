@@ -8,18 +8,24 @@ import {
   ImageOverlay,
   Polygon,
   Rectangle,
+  useMapEvent,
 } from 'react-leaflet'
 import { CRS, LatLngBounds } from 'leaflet'
+import MapResetButton from '../components/MapResetButton'
 
 // map.png 2253*1200
 
 export default function Map() {
-  const mapImage = {
+  const map = {
     url: '/map.png',
     width: 2253,
     height: 1200,
+    center: {
+      y: 600,
+      x: 1126,
+    },
   }
-  const bounds = new LatLngBounds([0, 0], [mapImage.height, mapImage.width])
+  const bounds = new LatLngBounds([0, 0], [map.height, map.width])
 
   const seatmaps = [
     {
@@ -54,11 +60,11 @@ export default function Map() {
 
   return (
     <MapContainer
-      center={[mapImage.height / 2, mapImage.width / 2]}
+      center={[map.center.y, map.center.x]}
       zoom={0}
       style={{ height: '100vh' }}
       crs={CRS.Simple}>
-      <ImageOverlay url={mapImage.url} bounds={bounds} opacity={0.5}>
+      <ImageOverlay url={map.url} bounds={bounds} opacity={0.5}>
         {seatmaps.map((map) => (
           <Rectangle
             bounds={map.position}
@@ -102,6 +108,7 @@ export default function Map() {
           />
         ))}
       </ImageOverlay>
+      <MapResetButton center={map.center} />
     </MapContainer>
   )
 }
